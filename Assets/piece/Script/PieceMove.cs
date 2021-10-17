@@ -35,7 +35,7 @@ public class PieceMove : MonoBehaviour
             FirstTime = true;
         }
         
-        PiecePos.y = Mathf.MoveTowards(PiecePos.y, 2, 0.01f);
+        PiecePos.y = Mathf.MoveTowards(PiecePos.y, 2, 0.1f);
         if(PiecePos.y >= 1.95f)
         {
             Move1 = true;
@@ -45,8 +45,8 @@ public class PieceMove : MonoBehaviour
 
     void DoMove1()
     {
-        PiecePos.x = Mathf.Lerp(PiecePos.x, PrePiecePos.x, 0.005f);
-        PiecePos.z = Mathf.Lerp(PiecePos.z, PrePiecePos.z, 0.005f);
+        PiecePos.x = Mathf.Lerp(PiecePos.x, PrePiecePos.x, 0.01f);
+        PiecePos.z = Mathf.Lerp(PiecePos.z, PrePiecePos.z, 0.01f);
         if(PiecePos.x >= PrePiecePos.x-0.05f && PiecePos.x <= PrePiecePos.x+0.05f && PiecePos.z >= PrePiecePos.z-0.05f && PiecePos.z <= PrePiecePos.z+0.05f)
         {
             Move2 = true;
@@ -56,7 +56,7 @@ public class PieceMove : MonoBehaviour
 
     void DoMove2()
     {
-        PiecePos.y = Mathf.MoveTowards(PiecePos.y, 0.5f, 0.01f);
+        PiecePos.y = Mathf.MoveTowards(PiecePos.y, 0.5f, 0.1f);
         if (PiecePos.y <= 0.55f)
         {
             Move2 = false;

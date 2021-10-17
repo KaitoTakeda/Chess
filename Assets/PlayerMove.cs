@@ -21,6 +21,7 @@ public class PlayerMove : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Player = this.gameObject;
         PlayerPos = Player.transform.position;
         PrePlayerPos = Player.transform.position;
         FloorPos[0] = Mathf.FloorToInt(Mathf.Floor(PlayerPos.x/10)) + 4;
@@ -65,7 +66,7 @@ public class PlayerMove : MonoBehaviour
 
         if(Move0 == true && Move1 == false && Move2 == false)
         {
-            PlayerPos.y = Mathf.Lerp(PlayerPos.y, 2, 0.05f);
+            PlayerPos.y = Mathf.Lerp(PlayerPos.y, 2, 0.1f);
             if(PlayerPos.y >= 1.95f)
             {
                 Move1 = true;
@@ -74,8 +75,8 @@ public class PlayerMove : MonoBehaviour
         }
         else if(Move0 == false && Move1 == true && Move2 == false)
         {
-            PlayerPos.x = Mathf.Lerp(PlayerPos.x, PrePlayerPos.x, 0.005f);
-            PlayerPos.z = Mathf.Lerp(PlayerPos.z, PrePlayerPos.z, 0.005f);
+            PlayerPos.x = Mathf.Lerp(PlayerPos.x, PrePlayerPos.x, 0.01f);
+            PlayerPos.z = Mathf.Lerp(PlayerPos.z, PrePlayerPos.z, 0.01f);
             if(PlayerPos.x >= PrePlayerPos.x-0.05f && PlayerPos.x <= PrePlayerPos.x+0.05f && PlayerPos.z >= PrePlayerPos.z-0.05f && PlayerPos.z <= PrePlayerPos.z+0.05f)
             {
                 Move2 = true;
@@ -84,7 +85,7 @@ public class PlayerMove : MonoBehaviour
         }
         else if(Move0 == false && Move1 == false && Move2 == true)
         {
-            PlayerPos.y = Mathf.Lerp(PlayerPos.y, 0.5f, 0.05f);
+            PlayerPos.y = Mathf.Lerp(PlayerPos.y, 0.5f, 0.1f);
             if(PlayerPos.y <= 0.55f)
             {
                 Move2 = false;

@@ -147,4 +147,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PieceID: 0
-  PieceType: 0
+  PieceType: 4
+  PieceObj: {fileID: 0}
+  FloorPos: 0000000000000000

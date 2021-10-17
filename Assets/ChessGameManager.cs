@@ -43,6 +43,12 @@ public class ChessGameManager : MonoBehaviour
     public GameObject[] WhitePiece = new GameObject[16];
     public GameObject[] BlackPiece = new GameObject[16];
 
+    public Piece[] WhitePieceScripts = new Piece[16];
+    public Piece[] BlackPieceScripts = new Piece[16];
+
+    public Destroy[] WDest = new Destroy[16];
+    public Destroy[] BDest = new Destroy[16];
+
     public int[,] Floor = new int[8,8];
 
     public bool LookPiece;
@@ -50,28 +56,9 @@ public class ChessGameManager : MonoBehaviour
     public int[,] AllyPossibility = new int[8,8];
     public int[,] EnemyPossibility = new int[8,8];
 
-    // Start is called before the first frame update
-    void Start()
+    void FloorDataUpdate()
     {
-        for (int i = 0; i < 8; i++)
-        for (int j = 0; j < 8; j++)
-        {
-            Floor[i, j] = 0;
-        }
-
-        for (int p = 0; p < 16; p++)
-        {
-            WhitePiece[p].GetComponent<Piece>().PieceID = p;
-        }
-    }
-
-    void DoLookPiece()
-    {
-        for (int i = 0; i < 8; i++)
-        for (int j = 0; j < 8; j++)
-        {
-            Floor[i, j] = 0;
-        }
+        Floor = new int[8,8];
 
         /*
         何もない = 0
@@ -89,70 +76,14 @@ public class ChessGameManager : MonoBehaviour
         黒のクイーン = -5
         黒のキング = -6
         */
-
+        
         for (int p = 0; p < 16; p++)
         {
-            if(WhitePiece[p].GetComponent<Destroy>().DoDestroy == false)
-            {
-                if(p == 3)
-                {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 10;
-                }
-                else if(p >= 8 && p < 10)
-                {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 2;
-                }
-                else if(p >= 10 && p < 12)
-                {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 3;
-                }
-                else if(p >= 12 && p < 14)
-                {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 4;
-                }
-                else if(p == 14)
-                {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 5;
-                }
-                else if(p == 15)
-                {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 6;
-                }
-                else
-                {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 1;
-                }
-            }
+            if(!WDest[p].DoDestroy)
+            Floor[WhitePieceScripts[p].FloorPos[0],WhitePieceScripts[p].FloorPos[1]] = WhitePieceScripts[p].PieceType;
 
-            if(BlackPiece[p].GetComponent<Destroy>().DoDestroy == false)
-            {
-                if(p >= 8 && p < 10)
-                {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -2;
-                }
-                else if(p >= 10 && p < 12)
-                {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -3;
-                }
-                else if(p >= 12 && p < 14)
-                {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -4;
-                }
-                else if(p == 14)
-                {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -5;
-                }
-                else if(p == 15)
-                {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -6;
-                }
-                else
-                {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -1;
-                }
-            }
-
-            
+            if(!BDest[p].DoDestroy)
+            Floor[BlackPieceScripts[p].FloorPos[0],BlackPieceScripts[p].FloorPos[1]] = BlackPieceScripts[p].PieceType;
         }
 
         Debug.Log ("\r\n" + 
@@ -167,59 +98,17 @@ public class ChessGameManager : MonoBehaviour
             );
     }
 
-    void DoLookPossibility()
+    // Start is called before the first frame update
+    void Start()
     {
-        for (int i = 0; i < 8; i++)
-        for (int j = 0; j < 8; j++)
+        for(int p = 0; p < 16; p++)
         {
-            switch(Floor[i,j])
-            {
-                case 0:
-                    //何もなし
-                    break;
-                case 1:
-                    //白のポーン
-                    break;
-                case 2:
-                    //プレイヤー
-                    break;
-                case 3:
-                    //白のルーク
-                    break;
-                case 4:
-                    //白のナイト
-                    break;
-                case 5:
-                    //白のビショップ
-                    break;
-                case 6:
-                    //白のクイーン
-                    break;
-                case 7:
-                    //白のキング
-                    break;
-                case 8:
-                    //黒のポーン
-                    break;
-                case 9:
-                    //黒のルーク
-                    break;
-                case 10:
-                    //黒のナイト
-                    break;
-                case 11:
-                    //黒のビショップ
-                    break;
-                case 12:
-                    //黒のクイーン
-                    break;
-                case 13:
-                    //黒のキング
-                    break;
-                default:
-                    break;
-            }
+            WhitePieceScripts[p] = WhitePiece[p].GetComponent<Piece>();
+            BlackPieceScripts[p] = BlackPiece[p].GetComponent<Piece>();
+            WDest[p] = WhitePiece[p].GetComponent<Destroy>();
+            BDest[p] = BlackPiece[p].GetComponent<Destroy>();
         }
+        FloorDataUpdate();
     }
 
     // Update is called once per frame
@@ -227,7 +116,7 @@ public class ChessGameManager : MonoBehaviour
     {
         if(LookPiece == true)
         {
-            DoLookPiece();
+            FloorDataUpdate();
             LookPiece = false;
         }
     }
