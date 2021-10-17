@@ -6,8 +6,8 @@ Shader "Unlit/floor"
         _SquareNum("SquareNum",Int) = 8
         _Range("Range", Range(0.0, 1.0)) = 0.0
         _TimeValue("_TimeValue",Float) = 0.0
-        _ColBlack("ColBlack",Float) = 0.1
-        _ColWhite("ColWhite",Float) = 0.9
+        _ColBlack("ColBlack",Color) = (0.1,0.1,0.1,1)
+        _ColWhite("ColWhite",Color) = (0.9,0.9,0.9,1)
         _ColPlusPer("_ColPlusPer",Float) = 20
     }
     SubShader
@@ -21,13 +21,13 @@ Shader "Unlit/floor"
             #pragma vertex vert
             #pragma fragment frag
             // make fog work
-            #pragma multi_compile_fog
+            #pragma multi_compile FOG_EXP FOG_EXP2 FOG_LINEAR
 
             int _SquareNum;
             float _Range;
             float _TimeValue;
-            float _ColBlack;
-            float _ColWhite;
+            fixed4 _ColBlack;
+            fixed4 _ColWhite;
             float _ColPlusPer;
 
             #include "UnityCG.cginc"
@@ -42,6 +42,7 @@ Shader "Unlit/floor"
             {
                 float2 uv : TEXCOORD0;
                 float4 vertex : SV_POSITION;
+                UNITY_FOG_COORDS(1)
             };
 
             float2 random2(float2 st)
@@ -56,6 +57,7 @@ Shader "Unlit/floor"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                UNITY_TRANSFER_FOG(o, o.vertex);
                 return o;
             }
 
@@ -71,7 +73,7 @@ Shader "Unlit/floor"
                 float d = 5;
                 float2 p_Min;
 
-                float col;
+                fixed4 col;
 
                 
                 
@@ -104,9 +106,12 @@ Shader "Unlit/floor"
                 }
                 //p_Min = (p_Min -0.5)*2;
                 
-                
+                //fixed4 Col = col;
+                UNITY_APPLY_FOG(i.fogCoord, col);
+
                 if(d >= 0)
                 {
+                    
                     return col;
                 }
                 else
