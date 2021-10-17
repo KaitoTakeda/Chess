@@ -13,6 +13,8 @@ public class PieceMove : MonoBehaviour
     public Vector3 PiecePos = Vector3.zero;
     public Vector3 PrePiecePos = Vector3.zero;
 
+    public bool FirstTime = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,6 +30,11 @@ public class PieceMove : MonoBehaviour
 
     void DoMove0()
     {
+        if(FirstTime == false)
+        {
+            FirstTime = true;
+        }
+        
         PiecePos.y = Mathf.MoveTowards(PiecePos.y, 2, 0.01f);
         if(PiecePos.y >= 1.95f)
         {

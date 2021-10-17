@@ -47,6 +47,9 @@ public class ChessGameManager : MonoBehaviour
 
     public bool LookPiece;
 
+    public int[,] AllyPossibility = new int[8,8];
+    public int[,] EnemyPossibility = new int[8,8];
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,6 +57,11 @@ public class ChessGameManager : MonoBehaviour
         for (int j = 0; j < 8; j++)
         {
             Floor[i, j] = 0;
+        }
+
+        for (int p = 0; p < 16; p++)
+        {
+            WhitePiece[p].GetComponent<Piece>().PieceID = p;
         }
     }
 
@@ -68,46 +76,47 @@ public class ChessGameManager : MonoBehaviour
         /*
         何もない = 0
         白のポーン = 1
-        プレイヤー = 2
-        白のルーク = 3
-        白のナイト = 4
-        白のビショップ = 5
-        白のクイーン = 6
-        白のキング = 7
-        黒のポーン = 8
-        黒のルーク = 9
-        黒のナイト = 10
-        黒のビショップ = 11
-        黒のクイーン = 12
-        黒のキング = 13
+        白のルーク = 2
+        白のナイト = 3
+        白のビショップ = 4
+        白のクイーン = 5
+        白のキング = 6
+        プレイヤー = 10
+        黒のポーン = -1
+        黒のルーク = -2
+        黒のナイト = -3
+        黒のビショップ = -4
+        黒のクイーン = -5
+        黒のキング = -6
         */
 
         for (int p = 0; p < 16; p++)
         {
-            if(WhitePiece[p].GetComponent<Destroy>().DoDestroy == false){
+            if(WhitePiece[p].GetComponent<Destroy>().DoDestroy == false)
+            {
                 if(p == 3)
                 {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 2;
+                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 10;
                 }
                 else if(p >= 8 && p < 10)
                 {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 3;
+                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 2;
                 }
                 else if(p >= 10 && p < 12)
                 {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 4;
+                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 3;
                 }
                 else if(p >= 12 && p < 14)
                 {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 5;
+                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 4;
                 }
                 else if(p == 14)
                 {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 6;
+                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 5;
                 }
                 else if(p == 15)
                 {
-                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 7;
+                    Floor[WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[0], WhitePiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 6;
                 }
                 else
                 {
@@ -115,30 +124,31 @@ public class ChessGameManager : MonoBehaviour
                 }
             }
 
-            if(BlackPiece[p].GetComponent<Destroy>().DoDestroy == false){
+            if(BlackPiece[p].GetComponent<Destroy>().DoDestroy == false)
+            {
                 if(p >= 8 && p < 10)
                 {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 9;
+                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -2;
                 }
                 else if(p >= 10 && p < 12)
                 {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 10;
+                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -3;
                 }
                 else if(p >= 12 && p < 14)
                 {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 11;
+                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -4;
                 }
                 else if(p == 14)
                 {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 12;
+                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -5;
                 }
                 else if(p == 15)
                 {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 13;
+                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -6;
                 }
                 else
                 {
-                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = 8;
+                    Floor[BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[0], BlackPiece[p].GetComponent<PieceTileCheck>().FloorPos[1]] = -1;
                 }
             }
 
@@ -155,7 +165,61 @@ public class ChessGameManager : MonoBehaviour
             Floor[0,1] + " " + Floor[1,1] + " " + Floor[2,1] + " " + Floor[3,1] + " " + Floor[4,1] + " " + Floor[5,1] + " " + Floor[6,1] + " " + Floor[7,1] + "\r\n" + 
             Floor[0,0] + " " + Floor[1,0] + " " + Floor[2,0] + " " + Floor[3,0] + " " + Floor[4,0] + " " + Floor[5,0] + " " + Floor[6,0] + " " + Floor[7,0]
             );
-        LookPiece = false;
+    }
+
+    void DoLookPossibility()
+    {
+        for (int i = 0; i < 8; i++)
+        for (int j = 0; j < 8; j++)
+        {
+            switch(Floor[i,j])
+            {
+                case 0:
+                    //何もなし
+                    break;
+                case 1:
+                    //白のポーン
+                    break;
+                case 2:
+                    //プレイヤー
+                    break;
+                case 3:
+                    //白のルーク
+                    break;
+                case 4:
+                    //白のナイト
+                    break;
+                case 5:
+                    //白のビショップ
+                    break;
+                case 6:
+                    //白のクイーン
+                    break;
+                case 7:
+                    //白のキング
+                    break;
+                case 8:
+                    //黒のポーン
+                    break;
+                case 9:
+                    //黒のルーク
+                    break;
+                case 10:
+                    //黒のナイト
+                    break;
+                case 11:
+                    //黒のビショップ
+                    break;
+                case 12:
+                    //黒のクイーン
+                    break;
+                case 13:
+                    //黒のキング
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 
     // Update is called once per frame
@@ -164,6 +228,7 @@ public class ChessGameManager : MonoBehaviour
         if(LookPiece == true)
         {
             DoLookPiece();
+            LookPiece = false;
         }
     }
 }

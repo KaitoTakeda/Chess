@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2036870670889777434}
   - component: {fileID: 5030681926717358510}
   - component: {fileID: -8050804154544565222}
+  - component: {fileID: -3521394632508639931}
   m_Layer: 0
   m_Name: WQueen
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 30808a69ebc834331ae75b596e20e676, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,6 +119,7 @@ MonoBehaviour:
   Move2: 0
   PiecePos: {x: 0, y: 0, z: 0}
   PrePiecePos: {x: 0, y: 0, z: 0}
+  FirstTime: 0
 --- !u!114 &-8050804154544565222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,3 +134,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mat: {fileID: 0}
   DoDestroy: 0
+--- !u!114 &-3521394632508639931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3584644124654893548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cdfc985a752e43b19fb18b72bf1ef0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PieceID: 0
+  PieceType: 11

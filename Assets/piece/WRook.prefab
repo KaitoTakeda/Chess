@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3628177001816687387}
   - component: {fileID: 3545949444383815444}
   - component: {fileID: -4918247409490559650}
+  - component: {fileID: 2741739690487127619}
   m_Layer: 0
   m_Name: WRook
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 30808a69ebc834331ae75b596e20e676, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,6 +119,7 @@ MonoBehaviour:
   Move2: 0
   PiecePos: {x: 0, y: 0, z: 0}
   PrePiecePos: {x: 0, y: 0, z: 0}
+  FirstTime: 0
 --- !u!114 &-4918247409490559650
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,3 +134,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mat: {fileID: 0}
   DoDestroy: 0
+--- !u!114 &2741739690487127619
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6424848119458955151}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cdfc985a752e43b19fb18b72bf1ef0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PieceID: 0
+  PieceType: 9

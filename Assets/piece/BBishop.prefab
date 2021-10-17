@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5601057075286001969}
   - component: {fileID: 3294687280072574221}
   - component: {fileID: 5394103534397747117}
+  - component: {fileID: -5253163814919618527}
   m_Layer: 0
   m_Name: BBishop
   m_TagString: Untagged
@@ -63,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 0472736ba69084298833d3a722e596a0, type: 2}
+  - {fileID: 0}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,6 +119,7 @@ MonoBehaviour:
   Move2: 0
   PiecePos: {x: 0, y: 0, z: 0}
   PrePiecePos: {x: 0, y: 0, z: 0}
+  FirstTime: 0
 --- !u!114 &5394103534397747117
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,3 +134,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mat: {fileID: 0}
   DoDestroy: 0
+--- !u!114 &-5253163814919618527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8551777697105458547}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cdfc985a752e43b19fb18b72bf1ef0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PieceID: 0
+  PieceType: 0
