@@ -55,6 +55,21 @@ public class ChessGameManager : MonoBehaviour
 
     public int[,] AllyPossibility = new int[8,8];
     public int[,] EnemyPossibility = new int[8,8];
+    public GameObject[] PossibilityTile;
+
+    public void DebugDataLog(int[,] data)
+    {
+        Debug.Log ("\r\n" + 
+            data[0,7] + " " + data[1,7] + " " + data[2,7] + " " + data[3,7] + " " + data[4,7] + " " + data[5,7] + " " + data[6,7] + " " + data[7,7] + "\r\n" + 
+            data[0,6] + " " + data[1,6] + " " + data[2,6] + " " + data[3,6] + " " + data[4,6] + " " + data[5,6] + " " + data[6,6] + " " + data[7,6] + "\r\n" + 
+            data[0,5] + " " + data[1,5] + " " + data[2,5] + " " + data[3,5] + " " + data[4,5] + " " + data[5,5] + " " + data[6,5] + " " + data[7,5] + "\r\n" + 
+            data[0,4] + " " + data[1,4] + " " + data[2,4] + " " + data[3,4] + " " + data[4,4] + " " + data[5,4] + " " + data[6,4] + " " + data[7,4] + "\r\n" + 
+            data[0,3] + " " + data[1,3] + " " + data[2,3] + " " + data[3,3] + " " + data[4,3] + " " + data[5,3] + " " + data[6,3] + " " + data[7,3] + "\r\n" + 
+            data[0,2] + " " + data[1,2] + " " + data[2,2] + " " + data[3,2] + " " + data[4,2] + " " + data[5,2] + " " + data[6,2] + " " + data[7,2] + "\r\n" + 
+            data[0,1] + " " + data[1,1] + " " + data[2,1] + " " + data[3,1] + " " + data[4,1] + " " + data[5,1] + " " + data[6,1] + " " + data[7,1] + "\r\n" + 
+            data[0,0] + " " + data[1,0] + " " + data[2,0] + " " + data[3,0] + " " + data[4,0] + " " + data[5,0] + " " + data[6,0] + " " + data[7,0]
+            );
+    }
 
     void FloorDataUpdate()
     {
@@ -86,16 +101,44 @@ public class ChessGameManager : MonoBehaviour
             Floor[BlackPieceScripts[p].FloorPos[0],BlackPieceScripts[p].FloorPos[1]] = BlackPieceScripts[p].PieceType;
         }
 
-        Debug.Log ("\r\n" + 
-            Floor[0,7] + " " + Floor[1,7] + " " + Floor[2,7] + " " + Floor[3,7] + " " + Floor[4,7] + " " + Floor[5,7] + " " + Floor[6,7] + " " + Floor[7,7] + "\r\n" + 
-            Floor[0,6] + " " + Floor[1,6] + " " + Floor[2,6] + " " + Floor[3,6] + " " + Floor[4,6] + " " + Floor[5,6] + " " + Floor[6,6] + " " + Floor[7,6] + "\r\n" + 
-            Floor[0,5] + " " + Floor[1,5] + " " + Floor[2,5] + " " + Floor[3,5] + " " + Floor[4,5] + " " + Floor[5,5] + " " + Floor[6,5] + " " + Floor[7,5] + "\r\n" + 
-            Floor[0,4] + " " + Floor[1,4] + " " + Floor[2,4] + " " + Floor[3,4] + " " + Floor[4,4] + " " + Floor[5,4] + " " + Floor[6,4] + " " + Floor[7,4] + "\r\n" + 
-            Floor[0,3] + " " + Floor[1,3] + " " + Floor[2,3] + " " + Floor[3,3] + " " + Floor[4,3] + " " + Floor[5,3] + " " + Floor[6,3] + " " + Floor[7,3] + "\r\n" + 
-            Floor[0,2] + " " + Floor[1,2] + " " + Floor[2,2] + " " + Floor[3,2] + " " + Floor[4,2] + " " + Floor[5,2] + " " + Floor[6,2] + " " + Floor[7,2] + "\r\n" + 
-            Floor[0,1] + " " + Floor[1,1] + " " + Floor[2,1] + " " + Floor[3,1] + " " + Floor[4,1] + " " + Floor[5,1] + " " + Floor[6,1] + " " + Floor[7,1] + "\r\n" + 
-            Floor[0,0] + " " + Floor[1,0] + " " + Floor[2,0] + " " + Floor[3,0] + " " + Floor[4,0] + " " + Floor[5,0] + " " + Floor[6,0] + " " + Floor[7,0]
-            );
+        DebugDataLog(Floor);
+
+    }
+
+    void GetPossibilityArea()
+    {
+        AllyPossibility = new int[8,8];
+        EnemyPossibility = new int[8,8];
+
+        for (int p = 0; p < 16; p++)
+        {
+            var Ally = WhitePieceScripts[p].CanMove(Floor);
+            var Enemy = BlackPieceScripts[p].CanMove(Floor);
+
+            for (int x = 0; x < 8; x++)
+            for (int y = 0; y < 8; y++)
+            {
+                AllyPossibility[x, y] += Ally[x, y];
+                EnemyPossibility[x, y] += Enemy[x, y];
+            }
+        }
+    }
+
+    void LookPT()
+    {
+        int Count = 0;
+        for (int y = 0; y < 8; y++)
+        for (int x = 0; x < 8; x++)
+        {
+            if(EnemyPossibility[x,y] >= 1)PossibilityTile[Count].SetActive(true);
+            else PossibilityTile[Count].SetActive(false);
+            Count++;
+        }
+    }
+
+    void DoNotLookPT()
+    {
+        for (int x = 0; x <= 8; x++)PossibilityTile[x].SetActive(false);
     }
 
     // Start is called before the first frame update
@@ -109,6 +152,9 @@ public class ChessGameManager : MonoBehaviour
             BDest[p] = BlackPiece[p].GetComponent<Destroy>();
         }
         FloorDataUpdate();
+        GetPossibilityArea();
+        LookPT();
+        DebugDataLog(EnemyPossibility);
     }
 
     // Update is called once per frame

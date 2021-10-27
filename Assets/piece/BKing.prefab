@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7180306368152351231}
   - component: {fileID: 7446210247124866335}
   - component: {fileID: -3868179178529944753}
-  - component: {fileID: 5729184060219436763}
+  - component: {fileID: 4591312601589594438}
   m_Layer: 0
   m_Name: BKing
   m_TagString: Untagged
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mat: {fileID: 0}
   DoDestroy: 0
---- !u!114 &5729184060219436763
+--- !u!114 &4591312601589594438
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 876129425422504498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cdfc985a752e43b19fb18b72bf1ef0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 3f3580f74f547d841875fc427f1ebd06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PieceID: 0

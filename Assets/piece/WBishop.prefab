@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7298529065681684605}
   - component: {fileID: 381243149507822657}
   - component: {fileID: 4088001096343499679}
-  - component: {fileID: 6525401857298215743}
+  - component: {fileID: -7079314985440821568}
   m_Layer: 0
   m_Name: WBishop
   m_TagString: Untagged
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mat: {fileID: 0}
   DoDestroy: 0
---- !u!114 &6525401857298215743
+--- !u!114 &-7079314985440821568
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6799699582593430591}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cdfc985a752e43b19fb18b72bf1ef0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 670ad482810a8f849b78dbca446fb706, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PieceID: 0

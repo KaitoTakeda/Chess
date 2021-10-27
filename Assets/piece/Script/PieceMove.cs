@@ -45,8 +45,8 @@ public class PieceMove : MonoBehaviour
 
     void DoMove1()
     {
-        PiecePos.x = Mathf.Lerp(PiecePos.x, PrePiecePos.x, 0.01f);
-        PiecePos.z = Mathf.Lerp(PiecePos.z, PrePiecePos.z, 0.01f);
+        PiecePos.x = Mathf.Lerp(PiecePos.x, PrePiecePos.x, 0.05f);
+        PiecePos.z = Mathf.Lerp(PiecePos.z, PrePiecePos.z, 0.05f);
         if(PiecePos.x >= PrePiecePos.x-0.05f && PiecePos.x <= PrePiecePos.x+0.05f && PiecePos.z >= PrePiecePos.z-0.05f && PiecePos.z <= PrePiecePos.z+0.05f)
         {
             Move2 = true;

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 121833906628056956}
   - component: {fileID: 206240562973696883}
   - component: {fileID: -268211983582740808}
-  - component: {fileID: -7236108555467961349}
+  - component: {fileID: 3042866223479493401}
   m_Layer: 0
   m_Name: BRook
   m_TagString: Untagged
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mat: {fileID: 0}
   DoDestroy: 0
---- !u!114 &-7236108555467961349
+--- !u!114 &3042866223479493401
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7692339321562508264}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cdfc985a752e43b19fb18b72bf1ef0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 69f849ca63156d4429c505155625b733, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PieceID: 0

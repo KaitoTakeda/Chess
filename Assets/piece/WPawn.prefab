@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3836532685164703700}
   - component: {fileID: 3836532685164703699}
   - component: {fileID: 7584367289162245269}
-  - component: {fileID: 3094926127400267898}
+  - component: {fileID: -6396625335424151272}
   m_Layer: 0
   m_Name: WPawn
   m_TagString: Untagged
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mat: {fileID: 0}
   DoDestroy: 0
---- !u!114 &3094926127400267898
+--- !u!114 &-6396625335424151272
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3836532685164703688}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cdfc985a752e43b19fb18b72bf1ef0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 61c3aee85f9ec6040af960b23c6a5660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PieceID: 0

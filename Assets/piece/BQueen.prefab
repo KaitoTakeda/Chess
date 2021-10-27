@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6950684865223867975}
   - component: {fileID: 4170670346886088435}
   - component: {fileID: 1909447318064959803}
-  - component: {fileID: -4745790421571549328}
+  - component: {fileID: 4447469264228377857}
   m_Layer: 0
   m_Name: BQueen
   m_TagString: Untagged
@@ -134,7 +134,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mat: {fileID: 0}
   DoDestroy: 0
---- !u!114 &-4745790421571549328
+--- !u!114 &4447469264228377857
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,7 +143,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5588569992790490801}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cdfc985a752e43b19fb18b72bf1ef0e, type: 3}
+  m_Script: {fileID: 11500000, guid: 4184c66ea937ca3409872f88ff48de36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   PieceID: 0

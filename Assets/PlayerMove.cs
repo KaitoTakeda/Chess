@@ -75,8 +75,8 @@ public class PlayerMove : MonoBehaviour
         }
         else if(Move0 == false && Move1 == true && Move2 == false)
         {
-            PlayerPos.x = Mathf.Lerp(PlayerPos.x, PrePlayerPos.x, 0.01f);
-            PlayerPos.z = Mathf.Lerp(PlayerPos.z, PrePlayerPos.z, 0.01f);
+            PlayerPos.x = Mathf.Lerp(PlayerPos.x, PrePlayerPos.x, 0.05f);
+            PlayerPos.z = Mathf.Lerp(PlayerPos.z, PrePlayerPos.z, 0.05f);
             if(PlayerPos.x >= PrePlayerPos.x-0.05f && PlayerPos.x <= PrePlayerPos.x+0.05f && PlayerPos.z >= PrePlayerPos.z-0.05f && PlayerPos.z <= PrePlayerPos.z+0.05f)
             {
                 Move2 = true;
