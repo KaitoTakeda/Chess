@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Death 1
+  m_Name: Death
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -72,18 +72,6 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-    - _Value: -0.098834805
-=======
-<<<<<<< HEAD
-    - _Value: -0.09993746
-=======
-    - _Value: -0.09999963
->>>>>>> e18b0aee40e197ef735f33ed264019bb2983567f
->>>>>>> a19c8147e0dea46280af9ed72fff72c419738408
->>>>>>> 2fb3fdf63c868aacabfef215cc6924f61b69f0fe
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
