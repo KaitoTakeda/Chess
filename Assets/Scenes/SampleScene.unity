@@ -2418,7 +2418,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: e012686b2d36b40609fb430795ff19cc, type: 2}
+  m_Material: {fileID: 2100000, guid: 65b2cca7a329f4af59863ee4f54d43de, type: 2}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -7604,7 +7604,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3850082341d408eb6da3caae927d61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  DeathMat: {fileID: 2100000, guid: e012686b2d36b40609fb430795ff19cc, type: 2}
+  DeathMat: {fileID: 2100000, guid: 65b2cca7a329f4af59863ee4f54d43de, type: 2}
   DoDeath: 0
 --- !u!114 &2137517979
 MonoBehaviour:
