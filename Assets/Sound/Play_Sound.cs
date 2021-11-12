@@ -14,7 +14,7 @@ public class Play_Sound : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Piece")){
-            Debug.Log ("Play Sound");
+            //Debug.Log ("Play Sound");
             audioSource.PlayOneShot(Sound);
         }
     }
