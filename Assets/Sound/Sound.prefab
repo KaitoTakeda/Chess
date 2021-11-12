@@ -75,6 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e369590af9958a343b5ce86faadbb611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Sound: {fileID: 8300000, guid: 76722e6c3a42b28438a92a7e54c8f318, type: 3}
 --- !u!82 &-2066284224067348630
 AudioSource:
   m_ObjectHideFlags: 0
@@ -96,9 +97,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 70
+  MaxDistance: 64
   Pan2D: 0
-  rolloffMode: 1
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -106,10 +107,19 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.016666412
       value: 1
-      inSlope: 0
-      outSlope: 0
+      inSlope: -4.245519
+      outSlope: -4.245519
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.2784374
+    - serializedVersion: 3
+      time: 0.30610183
+      value: 0.26675174
+      inSlope: -1.1578745
+      outSlope: -1.1578745
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
@@ -121,8 +131,8 @@ AudioSource:
       outSlope: 0
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0.37333333
+      outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
