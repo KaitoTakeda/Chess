@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e369590af9958a343b5ce86faadbb611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sound: {fileID: 8300000, guid: 76722e6c3a42b28438a92a7e54c8f318, type: 3}
+  Sound: {fileID: 8300000, guid: bebc4c14cd7c0f84ab2779c7587dcb0e, type: 3}
 --- !u!82 &-2066284224067348630
 AudioSource:
   m_ObjectHideFlags: 0
@@ -97,7 +97,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 64
+  MaxDistance: 100
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -107,23 +107,50 @@ AudioSource:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0.016666412
+      time: 0.09833908
       value: 1
-      inSlope: -4.245519
-      outSlope: -4.245519
+      inSlope: -Infinity
+      outSlope: -Infinity
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.2784374
+      outWeight: 0
     - serializedVersion: 3
-      time: 0.30610183
-      value: 0.26675174
-      inSlope: -1.1578745
-      outSlope: -1.1578745
+      time: 0.098626256
+      value: 0.68900484
+      inSlope: -30.596186
+      outSlope: -30.596186
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.45252147
+      outWeight: 0.2751242
+    - serializedVersion: 3
+      time: 0.11063737
+      value: 0.364071
+      inSlope: -8.473018
+      outSlope: -8.473018
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.9618163
+      outWeight: 0.18552528
+    - serializedVersion: 3
+      time: 0.15893418
+      value: 0.18168612
+      inSlope: -1.976133
+      outSlope: -1.976133
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.50048256
+      outWeight: 0.44223097
+    - serializedVersion: 3
+      time: 0.3059193
+      value: 0.051675126
+      inSlope: -0.16304667
+      outSlope: -0.16304667
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.33333334
+      outWeight: 0.16989633
     - serializedVersion: 3
       time: 1
       value: 0
