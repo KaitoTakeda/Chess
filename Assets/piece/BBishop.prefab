@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 3294687280072574221}
   - component: {fileID: 5394103534397747117}
   - component: {fileID: 7374701234341083995}
+  - component: {fileID: -1790720897525137223}
   m_Layer: 0
   m_Name: BBishop
-  m_TagString: Untagged
+  m_TagString: Piece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,3 +151,16 @@ MonoBehaviour:
   PieceType: -4
   PieceObj: {fileID: 0}
   FloorPos: 0000000000000000
+--- !u!65 &-1790720897525137223
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8551777697105458547}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0, y: 0.1, z: 0}
+  m_Center: {x: 0, y: 0.05, z: 0}

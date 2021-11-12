@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 3545949444383815444}
   - component: {fileID: -4918247409490559650}
   - component: {fileID: 4468381399826483271}
+  - component: {fileID: -2404536630233792678}
   m_Layer: 0
   m_Name: WRook
-  m_TagString: Untagged
+  m_TagString: Piece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,3 +151,16 @@ MonoBehaviour:
   PieceType: 2
   PieceObj: {fileID: 0}
   FloorPos: 0000000000000000
+--- !u!65 &-2404536630233792678
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6424848119458955151}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0, y: 0.1, z: 0}
+  m_Center: {x: 0, y: 0.05, z: 0}

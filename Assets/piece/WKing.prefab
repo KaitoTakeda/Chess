@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 3795058680261250766}
   - component: {fileID: 1326470119919671958}
   - component: {fileID: -3053940438068799756}
+  - component: {fileID: -6049835762603940185}
   m_Layer: 0
   m_Name: WKing
-  m_TagString: Untagged
+  m_TagString: Piece
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,3 +151,16 @@ MonoBehaviour:
   PieceType: 6
   PieceObj: {fileID: 0}
   FloorPos: 0000000000000000
+--- !u!65 &-6049835762603940185
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6905181605207149027}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0, y: 0.1, z: 0}
+  m_Center: {x: 0, y: 0.05, z: 0}
