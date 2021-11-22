@@ -151,6 +151,7 @@ MonoBehaviour:
   PieceType: -2
   PieceObj: {fileID: 0}
   FloorPos: 0000000000000000
+  pieceCost: 4
 --- !u!65 &-2984241628919716324
 BoxCollider:
   m_ObjectHideFlags: 0

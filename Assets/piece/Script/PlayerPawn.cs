@@ -7,6 +7,14 @@ public class PlayerPawn : Piece
     public override int[,] CanMove(int[,] FloorPieceData)
     {
         var data = new int[8,8];
+        int Check = CheckPos(FloorPos[0], FloorPos[1] + 1, FloorPieceData);
+        if(Check >= 0)data[FloorPos[0], FloorPos[1] + 1] = 1;
+        return data;
+    }
+    
+    public override int[,] PlayerPawnCanMove(int[,] FloorPieceData)
+    {
+        var data = new int[8,8];
         int Front = CheckPos(FloorPos[0], FloorPos[1] + 1, FloorPieceData);
         int Back = CheckPos(FloorPos[0], FloorPos[1] - 1, FloorPieceData);
         int Right = CheckPos(FloorPos[0] + 1, FloorPos[1], FloorPieceData);

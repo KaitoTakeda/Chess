@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -53,9 +54,12 @@ public class ChessGameManager : MonoBehaviour
 
     public bool LookPiece;
 
+    public int[,] PlayerPossibility = new int[8,8];
     public int[,] AllyPossibility = new int[8,8];
     public int[,] EnemyPossibility = new int[8,8];
     public GameObject[] PossibilityTile;
+
+    public GameObject[] PlayerPossibilityTile;
 
     public void DebugDataLog(int[,] data)
     {
@@ -107,17 +111,20 @@ public class ChessGameManager : MonoBehaviour
 
     void GetPossibilityArea()
     {
+        PlayerPossibility = new int[8,8];
         AllyPossibility = new int[8,8];
         EnemyPossibility = new int[8,8];
 
         for (int p = 0; p < 16; p++)
         {
+            var Player = WhitePieceScripts[3].PlayerPawnCanMove(Floor);
             var Ally = WhitePieceScripts[p].CanMove(Floor);
             var Enemy = BlackPieceScripts[p].CanMove(Floor);
 
             for (int x = 0; x < 8; x++)
             for (int y = 0; y < 8; y++)
             {
+                PlayerPossibility[x, y] += Player[x, y];
                 AllyPossibility[x, y] += Ally[x, y];
                 EnemyPossibility[x, y] += Enemy[x, y];
             }
@@ -132,6 +139,10 @@ public class ChessGameManager : MonoBehaviour
         {
             if(EnemyPossibility[x,y] >= 1)PossibilityTile[Count].SetActive(true);
             else PossibilityTile[Count].SetActive(false);
+            
+            if(PlayerPossibility[x,y] >= 1)PlayerPossibilityTile[Count].SetActive(true);
+            else PlayerPossibilityTile[Count].SetActive(false);
+
             Count++;
         }
     }
@@ -140,6 +151,62 @@ public class ChessGameManager : MonoBehaviour
     {
         for (int x = 0; x <= 8; x++)PossibilityTile[x].SetActive(false);
     }
+
+    /// <summary>
+    /// whiteかblackを選択してコストマップを計算
+    /// </summary>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    private IEnumerator CalcCostMap(Turn color)
+    {
+        int abs = 0;
+        int num = 0;
+
+        Piece[] scrs = null;
+        int[,] possibilities = null;
+        if (color == Turn.white)
+        {
+            scrs = WhitePieceScripts;
+            possibilities = EnemyPossibility;
+        }
+        else if (color == Turn.black)
+        {
+            scrs = BlackPieceScripts;
+            possibilities = AllyPossibility;
+        }
+        else Debug.Log("Error: 不正なターン形式です。");
+
+        for (int i = 0; i < 16;i++)
+        {
+            yield return StartCoroutine(scrs[i].CalcMyCostMap(possibilities, Floor));
+
+            int maxAbs = scrs[i].maxCost;
+            int minAbs = scrs[i].minCost;
+            if(maxAbs > abs || minAbs > abs)
+            {
+                if(maxAbs > minAbs) abs = maxAbs;
+                else abs = minAbs;
+                num = i;
+            }
+        }
+        Debug.Log($"{color} {scrs[num].GetType()}:{abs}");
+        DebugDataLog(scrs[num].costMap);
+    }
+
+    /*
+    コストの計算
+    移動できるマス +1
+    移動できないマス -1
+    移動するとコマを取れるマス +コマに設定されている点数+1
+    移動すると取られる可能性のあるマス -自分のコマに設定されている点数
+
+    ポーン 1
+    ルーク 4
+    ナイト 2
+    ビショップ 3
+    クイーン 5
+    キング 100
+    */
 
     // Start is called before the first frame update
     void Start()
@@ -151,10 +218,13 @@ public class ChessGameManager : MonoBehaviour
             WDest[p] = WhitePiece[p].GetComponent<Destroy>();
             BDest[p] = BlackPiece[p].GetComponent<Destroy>();
         }
+
+        //なぜかstartでマップ情報が正常に読み込まれない
         FloorDataUpdate();
         GetPossibilityArea();
         LookPT();
-        DebugDataLog(EnemyPossibility);
+        DebugDataLog(PlayerPossibility);
+        //StartCoroutine(CalcCostMap(Turn.white));
     }
 
     // Update is called once per frame
@@ -163,6 +233,14 @@ public class ChessGameManager : MonoBehaviour
         if(LookPiece == true)
         {
             FloorDataUpdate();
+            GetPossibilityArea();
+            LookPT();
+            DebugDataLog(PlayerPossibility);
+
+            StartCoroutine(CalcCostMap(Turn.white));
+
+            //DebugDataLog(WhitePieceScripts[14].CanMove(Floor));
+
             LookPiece = false;
         }
     }
