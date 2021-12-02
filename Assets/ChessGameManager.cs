@@ -186,11 +186,19 @@ public class ChessGameManager : MonoBehaviour
             {
                 if(maxAbs > minAbs) abs = maxAbs;
                 else abs = minAbs;
-                num = i;
             }
         }
-        Debug.Log($"{color} {scrs[num].GetType()}:{abs}");
-        DebugDataLog(scrs[num].costMap);
+
+        List<Piece> MaxCostPieces = new List<Piece>();
+        for (int i = 0; i < 16; i++)
+        {
+            if(scrs[i].maxCost == abs || scrs[i].minCost == abs)MaxCostPieces.Add(scrs[i]);
+        }
+
+        num = UnityEngine.Random.Range(0, MaxCostPieces.Count);
+
+        Debug.Log($"{color} {MaxCostPieces[num].GetType()}:{abs}");
+        DebugDataLog(MaxCostPieces[num].costMap);
     }
 
     /*
