@@ -220,10 +220,12 @@ public class ChessGameManager : MonoBehaviour
         }
 
         //なぜかstartでマップ情報が正常に読み込まれない
+        /*
         FloorDataUpdate();
         GetPossibilityArea();
         LookPT();
         DebugDataLog(PlayerPossibility);
+        */
         //StartCoroutine(CalcCostMap(Turn.white));
     }
 
@@ -235,7 +237,8 @@ public class ChessGameManager : MonoBehaviour
             FloorDataUpdate();
             GetPossibilityArea();
             LookPT();
-            DebugDataLog(PlayerPossibility);
+            //DebugDataLog(PlayerPossibility);
+            //DebugDataLog(AllyPossibility);
 
             StartCoroutine(CalcCostMap(Turn.white));
 

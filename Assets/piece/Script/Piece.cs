@@ -23,15 +23,17 @@ public class Piece : MonoBehaviour
         //移動可能だがそれ以上のマスを更新しない 0
         //移動可能 1
         
+        //盤面の中であること
         if(x < 0 || x > 7)return -1;
         if(y < 0 || y > 7)return -1;
 
-        
+        /*
         if(PieceType == 10)
         {
             if(FloorPieceData[x,y] == 0)return 1;
             else return 0;
         }
+        */
         
 
         if(FloorPieceData[x,y]*PieceType > 0)return -1;
