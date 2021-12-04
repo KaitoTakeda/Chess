@@ -18,6 +18,12 @@ public class PlayerMove : MonoBehaviour
 
     public int[] FloorPos = new int[2];
 
+    private int[,] Floor = new int[8, 8];
+    private int[,] CanMoveFloor = new int[8, 8];
+    private Piece PlayerPawn;
+    private GameObject CGM;
+    private ChessGameManager ChessGameManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +32,10 @@ public class PlayerMove : MonoBehaviour
         PrePlayerPos = Player.transform.position;
         FloorPos[0] = Mathf.FloorToInt(Mathf.Floor(PlayerPos.x/10)) + 4;
         FloorPos[1] = Mathf.FloorToInt(Mathf.Floor(PlayerPos.z/10)) + 4;
+
+        CGM = GameObject.Find ("ChessGameManager"); 
+        ChessGameManager = CGM.GetComponent<ChessGameManager>();
+        PlayerPawn = gameObject.GetComponent<Piece>();
     }
 
     // Update is called once per frame
@@ -54,17 +64,25 @@ public class PlayerMove : MonoBehaviour
         {
             if(hit.collider.CompareTag("Floor"))
             {
+                //盤面をアップデート
+                ChessGameManager.FloorDataUpdate();
+                //取得した盤面の情報をゲームマネージャーから持ってくる
+                Floor = ChessGameManager.Floor;
+                //移動可能なエリアを取得
+                CanMoveFloor = PlayerPawn.PlayerPawnCanMove(Floor);
+
                 //PrePlayerPos = new Vector3(hit.point.x, 0.5f, hit.point.z);
                 PrePlayerPos.x = (Mathf.Floor(hit.point.x/10) + 0.5f)*10;
                 PrePlayerPos.y = 0.5f;
                 PrePlayerPos.z = (Mathf.Floor(hit.point.z/10) + 0.5f)*10;
                 FloorPos[0] = Mathf.FloorToInt(Mathf.Floor(hit.point.x/10)) + 4;
                 FloorPos[1] = Mathf.FloorToInt(Mathf.Floor(hit.point.z/10)) + 4;
-                Move0 = true;
+
+                if(CanMoveFloor[FloorPos[0],FloorPos[1]] >= 1)Move0 = true;
             }
         }
 
-        if(Move0 == true && Move1 == false && Move2 == false)
+        if(Move0 == true && !Move1 && !Move2)
         {
             PlayerPos.y = Mathf.Lerp(PlayerPos.y, 2, 0.05f);
             if(PlayerPos.y >= 1.95f)
@@ -73,7 +91,7 @@ public class PlayerMove : MonoBehaviour
                 Move0 = false;
             }
         }
-        else if(Move0 == false && Move1 == true && Move2 == false)
+        else if(!Move0 && Move1 == true && !Move2)
         {
             PlayerPos.x = Mathf.Lerp(PlayerPos.x, PrePlayerPos.x, 0.025f);
             PlayerPos.z = Mathf.Lerp(PlayerPos.z, PrePlayerPos.z, 0.025f);
@@ -83,11 +101,12 @@ public class PlayerMove : MonoBehaviour
                 Move1 = false;
             }
         }
-        else if(Move0 == false && Move1 == false && Move2 == true)
+        else if(!Move0&& !Move1 && Move2 == true)
         {
             PlayerPos.y = Mathf.Lerp(PlayerPos.y, 0.5f, 0.05f);
             if(PlayerPos.y <= 0.55f)
             {
+                ChessGameManager.FloorVisualUpdate();
                 Move2 = false;
             }
         }

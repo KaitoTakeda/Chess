@@ -17,6 +17,7 @@ public class Piece : MonoBehaviour
     public int maxCost { get; private set; }
     public int minCost { get; private set; }
 
+    //移動可能な範囲を検出
     public int CheckPos(int x,int y,int[,] FloorPieceData)
     {
         //移動不可 -1
@@ -35,19 +36,40 @@ public class Piece : MonoBehaviour
         }
         */
         
-
+        //味方がいる場所
         if(FloorPieceData[x,y]*PieceType > 0)return -1;
+        //敵がいる場所
         else if(FloorPieceData[x,y]*PieceType < 0)return 0;
 
+        //それ以外
         return 1;
     }
 
+    //プレイヤーポーンの移動可能範囲を検出
+    public int PlayerCheckPos(int x,int y,int[,] FloorPieceData)
+    {
+        //移動不可 -1
+        //移動可能だがそれ以上のマスを更新しない 0
+        //移動可能 1
+        
+        //盤面の中であること
+        if(x < 0 || x > 7)return -1;
+        if(y < 0 || y > 7)return -1;
+
+        //何も無い場所
+        if(FloorPieceData[x,y] == 0)return 1;
+        //それ以外
+        else return 0;
+    }
+
+    //コマ毎の移動可能範囲の設定、それぞれのスクリプトでオーバーライド
     public virtual int[,] CanMove(int[,] FloorPieceData)
     {
         var data = new int[8,8];
         return data;
     }
 
+    //プレイヤーポーンの移動可能範囲の設定、プレイヤーポーンのスクリプトでオーバーライド、ゲームAIでは読み込まない
     public virtual int[,] PlayerPawnCanMove(int[,] FloorPieceData)
     {
         var data = new int[8,8];
@@ -60,6 +82,7 @@ public class Piece : MonoBehaviour
     {
         int[,] myMoveMap = CanMove(FloorPieceData);
 
+        //最も得をするか最も危険かのどちらかで動かすため、絶対値が大きい値(最大値と最小値)を取得する
         maxCost = -1000;
         minCost = 1000;
         for (int i = 0; i < 8; i++)
@@ -71,7 +94,9 @@ public class Piece : MonoBehaviour
                 if (costMap[i, j] != 0)
                     switch (Math.Abs(costMap[i, j]))
                     {
+                        //キングは10倍
                         case 6: costMap[i, j] *= 10; break;
+                        //プレイヤーは普通のポーンと同じ点数に調整
                         case 10: costMap[i, j] /= 10; break;
                         default : break;
                     }
@@ -81,9 +106,9 @@ public class Piece : MonoBehaviour
                 costMap[i, j] += myMoveMap[i, j] - eneMap[i,j] * pieceCost;
                 if(costMap[i,j] == 0) costMap[i, j] = -1;
 
-                
-
+                //最大値
                 if(costMap[i,j] > maxCost) maxCost = costMap[i, j];
+                //最小値
                 if(costMap[i,j] < minCost) minCost = costMap[i, j];
             }
         yield return null;
@@ -93,14 +118,20 @@ public class Piece : MonoBehaviour
     void Start()
     {
         PieceObj = this.gameObject;
+        //このコマがあるマスの検出
+        //x 0~7
         FloorPos[0] = Mathf.FloorToInt(Mathf.Floor(PieceObj.transform.position.x/10)) + 4;
+        //y 0~7
         FloorPos[1] = Mathf.FloorToInt(Mathf.Floor(PieceObj.transform.position.z/10)) + 4;
     }
 
     // Update is called once per frame
     void Update()
     {
+        //このコマがあるマスの検出
+        //x 0~7
         FloorPos[0] = Mathf.FloorToInt(Mathf.Floor(PieceObj.transform.position.x/10)) + 4;
+        //x 0~7
         FloorPos[1] = Mathf.FloorToInt(Mathf.Floor(PieceObj.transform.position.z/10)) + 4;
     }
 }

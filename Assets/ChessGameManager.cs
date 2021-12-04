@@ -52,7 +52,7 @@ public class ChessGameManager : MonoBehaviour
 
     public int[,] Floor = new int[8,8];
 
-    public bool LookPiece;
+    public bool DoUpdate;
 
     public int[,] PlayerPossibility = new int[8,8];
     public int[,] AllyPossibility = new int[8,8];
@@ -61,6 +61,7 @@ public class ChessGameManager : MonoBehaviour
 
     public GameObject[] PlayerPossibilityTile;
 
+    //マス表示用
     public void DebugDataLog(int[,] data)
     {
         Debug.Log ("\r\n" + 
@@ -75,7 +76,9 @@ public class ChessGameManager : MonoBehaviour
             );
     }
 
-    void FloorDataUpdate()
+    //現在盤面のどこに何があるのか情報を取得
+    //コマ毎に座標を送ってもらう
+    public void FloorDataUpdate()
     {
         Floor = new int[8,8];
 
@@ -105,10 +108,10 @@ public class ChessGameManager : MonoBehaviour
             Floor[BlackPieceScripts[p].FloorPos[0],BlackPieceScripts[p].FloorPos[1]] = BlackPieceScripts[p].PieceType;
         }
 
-        DebugDataLog(Floor);
-
+        //DebugDataLog(Floor);
     }
 
+    //コマ毎の移動可能範囲を取得
     void GetPossibilityArea()
     {
         PlayerPossibility = new int[8,8];
@@ -117,20 +120,21 @@ public class ChessGameManager : MonoBehaviour
 
         for (int p = 0; p < 16; p++)
         {
-            var Player = WhitePieceScripts[3].PlayerPawnCanMove(Floor);
             var Ally = WhitePieceScripts[p].CanMove(Floor);
+            var Player = WhitePieceScripts[3].PlayerPawnCanMove(Floor);
             var Enemy = BlackPieceScripts[p].CanMove(Floor);
 
             for (int x = 0; x < 8; x++)
             for (int y = 0; y < 8; y++)
             {
-                PlayerPossibility[x, y] += Player[x, y];
                 AllyPossibility[x, y] += Ally[x, y];
+                PlayerPossibility[x, y] += Player[x, y];
                 EnemyPossibility[x, y] += Enemy[x, y];
             }
         }
     }
 
+    //移動の可能性があるマスを表示
     void LookPT()
     {
         int Count = 0;
@@ -159,27 +163,39 @@ public class ChessGameManager : MonoBehaviour
     /// <returns></returns>
     private IEnumerator CalcCostMap(Turn color)
     {
+        //評価点の絶対値の取得に使う
         int abs = 0;
+        //何番目のゲームオブジェクトかを指定するために使う
         int num = 0;
 
         Piece[] scrs = null;
         int[,] possibilities = null;
+        //どちらのターンかによって返す情報を変える
+        //possibilitiesに後で呼び出す情報を格納する
         if (color == Turn.white)
         {
             scrs = WhitePieceScripts;
+            //白のターンの時は黒の移動可能エリアを格納
             possibilities = EnemyPossibility;
         }
         else if (color == Turn.black)
         {
             scrs = BlackPieceScripts;
+            //黒のターンの時は白の移動可能エリアを格納
             possibilities = AllyPossibility;
         }
         else Debug.Log("Error: 不正なターン形式です。");
 
         for (int i = 0; i < 16;i++)
         {
+            //possibilitiesに相手の移動可能エリアが格納されているので、コマ一つ一つにその情報を送る
+            //現在の盤面の状況も送る
+            //評価点(Cost)を返してもらう
+            //コルーチンによってこの処理を終えるまで後の処理を一時停止して、終わったらそれ以下の処理を行う
             yield return StartCoroutine(scrs[i].CalcMyCostMap(possibilities, Floor));
 
+            //帰ってきた評価点の最大値と最小値のどちらが絶対値として大きいか判別
+            //絶対値が大きい方を使う
             int maxAbs = scrs[i].maxCost;
             int minAbs = scrs[i].minCost;
             if(maxAbs > abs || minAbs > abs)
@@ -189,15 +205,20 @@ public class ChessGameManager : MonoBehaviour
             }
         }
 
+        //リスト(動的二次元配列)を用意し、先ほど用意したabsの値を格納していく
         List<Piece> MaxCostPieces = new List<Piece>();
         for (int i = 0; i < 16; i++)
         {
+            //absの格納
             if(scrs[i].maxCost == abs || scrs[i].minCost == abs)MaxCostPieces.Add(scrs[i]);
         }
 
+        //リストの中からランダムに一つピックアップする
         num = UnityEngine.Random.Range(0, MaxCostPieces.Count);
 
-        Debug.Log($"{color} {MaxCostPieces[num].GetType()}:{abs}");
+        //ターン,コマ,評価点
+        Debug.Log($"{color} GameObject{num} {MaxCostPieces[num].GetType()} : {abs}");
+        //そのコマのコストマップを出力
         DebugDataLog(MaxCostPieces[num].costMap);
     }
 
@@ -215,6 +236,13 @@ public class ChessGameManager : MonoBehaviour
     クイーン 5
     キング 100
     */
+
+    public void FloorVisualUpdate()
+    {
+        FloorDataUpdate();
+        GetPossibilityArea();
+        LookPT();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -240,19 +268,31 @@ public class ChessGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(LookPiece == true)
+        if(DoUpdate == true)
         {
+            //盤面の状況を取得
             FloorDataUpdate();
+
+            //盤面の状況をデバッグログで表示
+            //DebugDataLog(Floor);
+
+            //コマ毎の移動可能範囲を取得
             GetPossibilityArea();
-            LookPT();
+
+            //移動可能範囲をデバッグログで表示
             //DebugDataLog(PlayerPossibility);
             //DebugDataLog(AllyPossibility);
+            //DebugDataLog(EnemyPossibility);
 
-            StartCoroutine(CalcCostMap(Turn.white));
+            //移動の可能性があるエリアをフロアに表示
+            LookPT();
+            
+            //移動させるべきコマをデバッグログに表示
+            //StartCoroutine(CalcCostMap(Turn.white));
+            StartCoroutine(CalcCostMap(Turn.black));
 
-            //DebugDataLog(WhitePieceScripts[14].CanMove(Floor));
 
-            LookPiece = false;
+            DoUpdate = false;
         }
     }
 }

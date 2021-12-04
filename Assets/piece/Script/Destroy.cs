@@ -28,17 +28,9 @@ public class Destroy : MonoBehaviour
             {
                 Value += 0.0005f;
             }
-            else if(Value >= 0.01f && Value < 0.05f)
+            else if(Value >= 0.01f && Value < 1)
             {
                 Value += 0.001f;
-            }
-            else if(Value >= 0.05f && Value < 0.5f)
-            {
-                Value += 0.01f;
-            }
-            else if(Value >= 0.5f && Value < 1)
-            {
-                Value += 0.05f;
             }
         }
 
