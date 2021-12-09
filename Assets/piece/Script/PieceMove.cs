@@ -7,14 +7,12 @@ public class PieceMove : MonoBehaviour
     public GameObject Piece;
     public int[] InputTilePosForPieceMove = new int[2];
     public bool Move0 = false;
-    public bool Move1 = false;
-    public bool Move2 = false;
+    private bool Move1 = false;
+    private bool Move2 = false;
+    public bool MoveEnd = false;
 
     public Vector3 PiecePos = Vector3.zero;
     public Vector3 PrePiecePos = Vector3.zero;
-
-    public bool FirstTime = false;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,11 +28,10 @@ public class PieceMove : MonoBehaviour
 
     void DoMove0()
     {
-        if(FirstTime == false)
-        {
-            FirstTime = true;
-        }
-        
+        PrePiecePos.x = (InputTilePosForPieceMove[0] - 4) * 10 + 5;
+        PrePiecePos.z = (InputTilePosForPieceMove[1] - 4) * 10 + 5;
+        PrePiecePos.y = 0.5f;
+
         PiecePos.y = Mathf.MoveTowards(PiecePos.y, 2, 0.05f);
         if(PiecePos.y >= 1.95f)
         {
@@ -59,6 +56,7 @@ public class PieceMove : MonoBehaviour
         PiecePos.y = Mathf.MoveTowards(PiecePos.y, 0.5f, 0.05f);
         if (PiecePos.y <= 0.55f)
         {
+            MoveEnd = true;
             Move2 = false;
         }
     }
@@ -66,19 +64,15 @@ public class PieceMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PrePiecePos.x = (InputTilePosForPieceMove[0] - 4) * 10 + 5;
-        PrePiecePos.z = (InputTilePosForPieceMove[1] - 4) * 10 + 5;
-        PrePiecePos.y = 0.5f;
-
-        if(Move0 == true && Move1 == false && Move2 == false)
+        if(Move0 == true && !Move1 && !Move2)
         {
             DoMove0();
         }
-        else if(Move0 == false && Move1 == true && Move2 == false)
+        else if(!Move0 && Move1 == true &&! Move2)
         {
             DoMove1();
         }
-        else if (Move0 == false && Move1 == false && Move2 == true)
+        else if (!Move0 && !Move1 && Move2 == true)
         {
             DoMove2();
         }

@@ -16,6 +16,7 @@ public class Play_Sound : MonoBehaviour
         if(other.CompareTag("Piece")){
             //Debug.Log ("Play Sound");
             audioSource.PlayOneShot(Sound);
+            Debug.Log("コマが通過した");
         }
     }
 }

@@ -7,7 +7,7 @@ public class VisualManager : MonoBehaviour
     [SerializeField, Range(0.0f, 8.0f)]
     public float FogRange;
     [SerializeField, Range(0.0f, 1.0f)]
-    public float FloorDistortionRange;
+    public float Betrayal;
 
     //public Color DamageColor;
     public bool Damage;
@@ -22,12 +22,12 @@ public class VisualManager : MonoBehaviour
 
     void DoDamage()
     {
-        if (FloorDistortionRange < 1)
+        if (Betrayal < 1)
         {
             GetComponent<Fog>().Damage = Damage;
-            FloorDistortionRange += 0.1f;
+            //FloorDistortionRange += 0.1f;
         }
-        else if(FloorDistortionRange >= 1)
+        else if(Betrayal >= 1)
         {
             if(GetComponent<Fog>().Treason == false)
             {
@@ -47,7 +47,7 @@ public class VisualManager : MonoBehaviour
             Damage = false;
         }
         GetComponent<Fog>().EndDist = FogRange;
-        GetComponent<Floor>().DistortionRange = FloorDistortionRange;
+        GetComponent<Floor>().DistortionRange = Betrayal;
         GetComponent<Death>().DoDeath = Death;
     }
 }

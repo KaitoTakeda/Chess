@@ -52,7 +52,7 @@ public class ChessGameManager : MonoBehaviour
 
     public int[,] Floor = new int[8,8];
 
-    public bool DoUpdate;
+    //public bool DoUpdate;
 
     public int[,] PlayerPossibility = new int[8,8];
     public int[,] AllyPossibility = new int[8,8];
@@ -60,6 +60,25 @@ public class ChessGameManager : MonoBehaviour
     public GameObject[] PossibilityTile;
 
     public GameObject[] PlayerPossibilityTile;
+    public GameObject[] CommandPossibilityTile;
+
+    private bool FirstCrick;
+    public int WhitePieceNum;
+    public int BlackPieceNum;
+    public int[] Destination = new int[2];
+    public int[] WhiteDest = new int[2];
+    public int[] BlackDest = new int[2];
+
+    Turn turn;
+
+    public bool ClickCheck = false;
+    public bool NoClick = false;
+    public bool FirstClick = false;
+    private bool WhitePieceTurn = false;
+
+    public GameObject VisualManager;
+    public float Betrayal = 0;
+
 
     //マス表示用
     public void DebugDataLog(int[,] data)
@@ -114,6 +133,8 @@ public class ChessGameManager : MonoBehaviour
     //コマ毎の移動可能範囲を取得
     void GetPossibilityArea()
     {
+        FloorDataUpdate();
+
         PlayerPossibility = new int[8,8];
         AllyPossibility = new int[8,8];
         EnemyPossibility = new int[8,8];
@@ -135,25 +156,35 @@ public class ChessGameManager : MonoBehaviour
     }
 
     //移動の可能性があるマスを表示
+    //指令があるかどうかも表示
+    
     void LookPT()
     {
+        GetPossibilityArea();
+
         int Count = 0;
         for (int y = 0; y < 8; y++)
-        for (int x = 0; x < 8; x++)
-        {
-            if(EnemyPossibility[x,y] >= 1)PossibilityTile[Count].SetActive(true);
-            else PossibilityTile[Count].SetActive(false);
-            
-            if(PlayerPossibility[x,y] >= 1)PlayerPossibilityTile[Count].SetActive(true);
-            else PlayerPossibilityTile[Count].SetActive(false);
+            for (int x = 0; x < 8; x++)
+            {
+                if (EnemyPossibility[x, y] >= 1) PossibilityTile[Count].SetActive(true);
+                else PossibilityTile[Count].SetActive(false);
 
-            Count++;
-        }
-    }
+                if (PlayerPossibility[x, y] >= 1) PlayerPossibilityTile[Count].SetActive(true);
+                else PlayerPossibilityTile[Count].SetActive(false);
 
-    void DoNotLookPT()
-    {
-        for (int x = 0; x <= 8; x++)PossibilityTile[x].SetActive(false);
+                if (WhitePieceNum == 3)
+                {
+                    if (x == Destination[0] && y == Destination[1]) CommandPossibilityTile[Count].SetActive(true);
+                    else CommandPossibilityTile[Count].SetActive(false);
+                }
+                else
+                {
+                    if (x == WhitePieceScripts[3].FloorPos[0] && y == WhitePieceScripts[3].FloorPos[1]) CommandPossibilityTile[Count].SetActive(true);
+                    else CommandPossibilityTile[Count].SetActive(false);
+                }
+
+                Count++;
+            }
     }
 
     /// <summary>
@@ -161,12 +192,21 @@ public class ChessGameManager : MonoBehaviour
     /// </summary>
     /// <param name="color"></param>
     /// <returns></returns>
-    private IEnumerator CalcCostMap(Turn color)
+    private IEnumerator CalcCostMap(Turn color, bool WhitePieceMove)
     {
+        GetPossibilityArea();
+        WhitePieceNum = 0;
+        //WhiteDest = new int[2];
+        //BlackDest = new int[2];
+
         //評価点の絶対値の取得に使う
         int abs = 0;
+        //絶対値の差を求めるのに使う
+        int sub = 0;
         //何番目のゲームオブジェクトかを指定するために使う
         int num = 0;
+
+        int UCN = 0;
 
         Piece[] scrs = null;
         int[,] possibilities = null;
@@ -198,6 +238,9 @@ public class ChessGameManager : MonoBehaviour
             //絶対値が大きい方を使う
             int maxAbs = scrs[i].maxCost;
             int minAbs = scrs[i].minCost;
+
+            if(Mathf.Abs(maxAbs) + Mathf.Abs(minAbs) > sub)sub = Mathf.Abs(maxAbs) + Mathf.Abs(minAbs);
+
             if(maxAbs > abs || minAbs > abs)
             {
                 if(maxAbs > minAbs) abs = maxAbs;
@@ -209,17 +252,58 @@ public class ChessGameManager : MonoBehaviour
         List<Piece> MaxCostPieces = new List<Piece>();
         for (int i = 0; i < 16; i++)
         {
-            //absの格納
-            if(scrs[i].maxCost == abs || scrs[i].minCost == abs)MaxCostPieces.Add(scrs[i]);
+            if (!WhitePieceMove)
+            {
+                //absの格納
+                //if(scrs[i].maxCost == abs || scrs[i].minCost == abs)MaxCostPieces.Add(scrs[i]);
+                if (Mathf.Abs(scrs[i].maxCost) + Mathf.Abs(scrs[i].minCost) == sub) MaxCostPieces.Add(scrs[i]);
+            }
+            else if(WhitePieceMove)
+            {
+                if (i != 3)
+                {
+                    //absの格納
+                    //if(scrs[i].maxCost == abs || scrs[i].minCost == abs)MaxCostPieces.Add(scrs[i]);
+                    if (Mathf.Abs(scrs[i].maxCost) + Mathf.Abs(scrs[i].minCost) == sub) MaxCostPieces.Add(scrs[i]);
+                }
+            }
         }
 
         //リストの中からランダムに一つピックアップする
         num = UnityEngine.Random.Range(0, MaxCostPieces.Count);
 
+        
+
+        MaxCostPieces[num].UnderCommand = true;
+
+        for (int i = 0; i < 16; i++)
+        {
+            if (scrs[i].UnderCommand == true)
+            {
+                UCN = i;
+                scrs[i].UnderCommand = false;
+            }
+        }
+
         //ターン,コマ,評価点
-        Debug.Log($"{color} GameObject{num} {MaxCostPieces[num].GetType()} : {abs}");
+        Debug.Log($"{color} GameObject{UCN} {MaxCostPieces[num].GetType()} : 評価点{abs}, 移動座標[{scrs[UCN].MaxCostPos[0]},{scrs[UCN].MaxCostPos[1]}]");
         //そのコマのコストマップを出力
         DebugDataLog(MaxCostPieces[num].costMap);
+
+        Destination = scrs[UCN].MaxCostPos;
+        if (color == Turn.white)
+        {
+            WhitePieceNum = UCN;
+            WhiteDest = Destination;
+        }
+        else
+        {
+            BlackPieceNum = UCN;
+            BlackDest = Destination;
+        }
+        
+        LookPT();
+        yield return null;
     }
 
     /*
@@ -241,12 +325,205 @@ public class ChessGameManager : MonoBehaviour
     {
         FloorDataUpdate();
         GetPossibilityArea();
-        LookPT();
+    }
+
+    //クリックしたとき実行
+    private void PlayerTern()
+    {
+
+        (int X, int Y) DestPos = (Destination[0], Destination[1]);
+        (int X, int Y) NowPos = (WhitePieceScripts[3].FloorPos[0], WhitePieceScripts[3].FloorPos[1]);
+        (int X, int Y) NextPos = (WhitePiece[3].GetComponent<PlayerMove>().FloorPosOutput[0], WhitePiece[3].GetComponent<PlayerMove>().FloorPosOutput[1]);
+
+        //プレイヤーに命令が来ているとき
+        //指令に従い動いた
+        if (WhitePieceNum == 3 && DestPos.X == NextPos.X && DestPos.Y == NextPos.Y)
+        {
+            //ここでプレイヤーを動かす
+            WhitePiece[3].GetComponent<PlayerMove>().Move0 = true;
+            Debug.Log("プレイヤーに命令があり、命令に従い動いた");
+
+            if(Betrayal >= 0.05)Betrayal -= 0.05f;
+            else Betrayal = 0;
+
+            //ターンを黒に渡す
+            turn = Turn.black;
+            //マップ更新
+            StartCoroutine(CalcCostMap(Turn.black, WhitePieceTurn));
+        }
+        //指令は来ていたが無視して別の方向に動いた
+        else if(WhitePieceNum == 3 && DestPos.X != NextPos.X && DestPos.Y != NextPos.Y)
+        {
+            //ここでプレイヤーを動かす
+            WhitePiece[3].GetComponent<PlayerMove>().Move0 = true;
+            Debug.Log("プレイヤーに命令があったが、命令に背いて動いた");
+
+            if(Betrayal <= 1)Betrayal += 0.1f;
+            else Betrayal = 1;
+            VisualManager.GetComponent<VisualManager>().Damage = true;
+
+            //ターンを黒に渡す
+            turn = Turn.black;
+            //マップ更新
+            StartCoroutine(CalcCostMap(Turn.black, WhitePieceTurn));
+        }
+        //指令に違反し動かなかった
+        else if (WhitePieceNum == 3 && NowPos.X == NextPos.X && NowPos.Y == NextPos.Y)
+        {
+            //ここでプレイヤーを動かす（上下運動）
+            WhitePiece[3].GetComponent<PlayerMove>().Move0 = true;
+            Debug.Log("プレイヤーに命令があったが、命令に背いて動かなかった");
+
+            if(Betrayal <= 1)Betrayal += 0.1f;
+            else Betrayal = 1;
+            VisualManager.GetComponent<VisualManager>().Damage = true;
+
+            turn = Turn.white;
+            WhitePieceTurn = true;
+            //マップ更新
+            StartCoroutine(CalcCostMap(Turn.white, WhitePieceTurn));
+        }
+        //プレイヤーは待機の命令が来ているとき
+        //指令に従い動かなかった
+        else if (WhitePieceNum != 3 && NowPos.X == NextPos.X && NowPos.Y == NextPos.Y)
+        {
+            //ここでプレイヤーを動かす（上下運動）
+            WhitePiece[3].GetComponent<PlayerMove>().Move0 = true;
+            Debug.Log("プレイヤーに命令がなく、命令に従い動かなかった");
+
+            if(Betrayal >= 0.05)Betrayal -= 0.05f;
+            else Betrayal = 0;
+
+            WhitePieceTurn = true;
+        }
+        //指令に違反し動いた
+        else if (WhitePieceNum != 3)
+        {
+            //ここでプレイヤーを動かす
+            WhitePiece[3].GetComponent<PlayerMove>().Move0 = true;
+            Debug.Log("プレイヤーに命令がなく、命令に背いて動いた");
+
+            if(Betrayal <= 1)Betrayal += 0.1f;
+            else Betrayal = 1;
+            VisualManager.GetComponent<VisualManager>().Damage = true;
+
+            //マップ更新
+            StartCoroutine(CalcCostMap(Turn.black, WhitePieceTurn));
+            //ターンを黒に渡す
+            turn = Turn.black;
+        }
+    }
+
+    private void WhiteTurn()
+    {
+        //ここで白の駒を動かす
+        WhitePiece[WhitePieceNum].GetComponent<PieceMove>().Move0 = true;
+        WhitePiece[WhitePieceNum].GetComponent<PieceMove>().InputTilePosForPieceMove = Destination;
+        Debug.Log("白の駒が動いた");
+
+        //マップ更新
+        StartCoroutine(CalcCostMap(Turn.black, WhitePieceTurn));
+        //ターンを黒に渡す
+        turn = Turn.black;
+
+        WhitePieceTurn = false;
+    }
+
+    private void BlackTurn()
+    {
+        //ここで黒の駒を動かす
+        BlackPiece[BlackPieceNum].GetComponent<PieceMove>().Move0 = true;
+        BlackPiece[BlackPieceNum].GetComponent<PieceMove>().InputTilePosForPieceMove = Destination;
+        
+        //マップ更新
+        StartCoroutine(CalcCostMap(Turn.white, WhitePieceTurn));
+        //ターンを白に渡す
+        turn = Turn.white;
+    }
+
+    private void TurnControl()
+    {
+        if(ClickCheck ==true)
+        {
+            if(!FirstClick)
+            {
+                turn = Turn.white;
+                FloorDataUpdate();
+                GetPossibilityArea();
+                StartCoroutine(CalcCostMap(turn, WhitePieceTurn));
+                LookPT();
+                FirstClick = true;
+            }
+            else
+            {
+                if (turn == Turn.white && !WhitePieceTurn)
+                {
+                    PlayerTern();
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if (WhitePiece[3].GetComponent<PlayerMove>().FloorPosOutput[0] == BlackPieceScripts[i].FloorPos[0] && WhitePiece[3].GetComponent<PlayerMove>().FloorPosOutput[1] == BlackPieceScripts[i].FloorPos[1])
+                        {
+                            BlackPiece[i].GetComponent<Destroy>().DoDestroy = true;
+                        }
+                        else if (i != 3 && WhitePiece[3].GetComponent<PlayerMove>().FloorPosOutput[0] == WhitePieceScripts[i].FloorPos[0] && WhitePiece[3].GetComponent<PlayerMove>().FloorPosOutput[1] == WhitePieceScripts[i].FloorPos[1])
+                        {
+                            WhitePiece[i].GetComponent<Destroy>().DoDestroy = true;
+                            Betrayal += 1f;
+                            VisualManager.GetComponent<VisualManager>().Damage = true;
+                        }
+                    }
+                }
+                else if (turn == Turn.white && WhitePieceTurn)
+                {
+                    WhiteTurn();
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if (WhiteDest[0] == BlackPieceScripts[i].FloorPos[0] && WhiteDest[1] == BlackPieceScripts[i].FloorPos[1])
+                        {
+                            BlackPiece[i].GetComponent<Destroy>().DoDestroy = true;
+                        }
+                    }
+                }
+                else
+                {
+                    BlackTurn();
+                    for (int i = 0; i < 16; i++)
+                    {
+                        if (BlackDest[0] == WhitePieceScripts[i].FloorPos[0] && BlackDest[1] == WhitePieceScripts[i].FloorPos[1])
+                        {
+                            WhitePiece[i].GetComponent<Destroy>().DoDestroy = true;
+                        }
+                    }
+                }
+            }
+            ClickCheck = false;
+        }
+
+        if(WhitePieceNum != 3 && WhitePiece[WhitePieceNum].GetComponent<PieceMove>().MoveEnd)
+        {
+            LookPT();
+            NoClick = false;
+            WhitePiece[WhitePieceNum].GetComponent<PieceMove>().MoveEnd = false;
+        }
+        else if(WhitePiece[3].GetComponent<PlayerMove>().MoveEnd)
+        {
+            LookPT();
+            NoClick = false;
+            WhitePiece[3].GetComponent<PlayerMove>().MoveEnd = false;
+        }
+        else if(BlackPiece[BlackPieceNum].GetComponent<PieceMove>().MoveEnd)
+        {
+            LookPT();
+            NoClick = false;
+            BlackPiece[BlackPieceNum].GetComponent<PieceMove>().MoveEnd = false;
+        }
     }
 
     // Start is called before the first frame update
     void Start()
     {
+        Betrayal = 0;
+
         for(int p = 0; p < 16; p++)
         {
             WhitePieceScripts[p] = WhitePiece[p].GetComponent<Piece>();
@@ -268,7 +545,8 @@ public class ChessGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(DoUpdate == true)
+        /*
+        if(Input.GetMouseButtonDown(0))
         {
             //盤面の状況を取得
             FloorDataUpdate();
@@ -285,14 +563,18 @@ public class ChessGameManager : MonoBehaviour
             //DebugDataLog(EnemyPossibility);
 
             //移動の可能性があるエリアをフロアに表示
-            LookPT();
+            //LookPT();
             
             //移動させるべきコマをデバッグログに表示
-            //StartCoroutine(CalcCostMap(Turn.white));
-            StartCoroutine(CalcCostMap(Turn.black));
+            StartCoroutine(CalcCostMap(Turn.white));
+            //StartCoroutine(CalcCostMap(Turn.black));
 
 
-            DoUpdate = false;
+            //DoUpdate = false;
         }
+        */
+        //DoCrick();
+        TurnControl();
+        VisualManager.GetComponent<VisualManager>().Betrayal = Betrayal;
     }
 }

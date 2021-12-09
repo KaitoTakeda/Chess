@@ -17,6 +17,10 @@ public class Piece : MonoBehaviour
     public int maxCost { get; private set; }
     public int minCost { get; private set; }
 
+    public int[] MaxCostPos = new int[2] { 0, 0 };
+
+    public bool UnderCommand = false;
+
     //移動可能な範囲を検出
     public int CheckPos(int x,int y,int[,] FloorPieceData)
     {
@@ -104,12 +108,16 @@ public class Piece : MonoBehaviour
                 //負の値だったら正の値に反転させる
                 if(costMap[i,j] < 0) costMap[i, j] *= -1;
                 costMap[i, j] += myMoveMap[i, j] - eneMap[i,j] * pieceCost;
-                if(costMap[i,j] == 0) costMap[i, j] = -1;
+                //if(costMap[i,j] == 0) costMap[i, j] = -1;
 
                 //最大値
-                if(costMap[i,j] > maxCost) maxCost = costMap[i, j];
+                if(costMap[i,j] > maxCost) 
+                {
+                    MaxCostPos = new int[2] { i, j };
+                    maxCost = costMap[i, j];
+                }
                 //最小値
-                if(costMap[i,j] < minCost) minCost = costMap[i, j];
+                if(costMap[i,j] < minCost && i == FloorPos[0] && j == FloorPos[1]) minCost = costMap[i, j];
             }
         yield return null;
     }
