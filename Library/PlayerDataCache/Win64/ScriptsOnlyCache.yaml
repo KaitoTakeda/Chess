@@ -73,51 +73,51 @@ ScriptsOnlyBuild:
     - Class: 108
       Script: {instanceID: 0}
     - Class: 114
-      Script: {instanceID: 1548}
+      Script: {instanceID: 1638}
     - Class: 114
-      Script: {instanceID: 1686}
+      Script: {instanceID: 1776}
     - Class: 114
-      Script: {instanceID: 1804}
+      Script: {instanceID: 1894}
     - Class: 114
-      Script: {instanceID: 2700}
+      Script: {instanceID: 2790}
     - Class: 114
-      Script: {instanceID: 2714}
+      Script: {instanceID: 2804}
     - Class: 114
-      Script: {instanceID: 2856}
+      Script: {instanceID: 2946}
     - Class: 114
-      Script: {instanceID: 2952}
+      Script: {instanceID: 3042}
     - Class: 114
-      Script: {instanceID: 3462}
+      Script: {instanceID: 3552}
     - Class: 114
-      Script: {instanceID: 3466}
+      Script: {instanceID: 3556}
     - Class: 114
-      Script: {instanceID: 3848}
+      Script: {instanceID: 3938}
     - Class: 114
-      Script: {instanceID: 4142}
+      Script: {instanceID: 4232}
     - Class: 114
-      Script: {instanceID: 4292}
+      Script: {instanceID: 4382}
     - Class: 114
-      Script: {instanceID: 4646}
+      Script: {instanceID: 4736}
     - Class: 114
-      Script: {instanceID: 4660}
+      Script: {instanceID: 4750}
     - Class: 114
-      Script: {instanceID: 4790}
+      Script: {instanceID: 4880}
     - Class: 114
-      Script: {instanceID: 4878}
+      Script: {instanceID: 4968}
     - Class: 114
-      Script: {instanceID: 4940}
+      Script: {instanceID: 5030}
     - Class: 114
-      Script: {instanceID: 5106}
+      Script: {instanceID: 5196}
     - Class: 114
-      Script: {instanceID: 5198}
+      Script: {instanceID: 5288}
     - Class: 114
-      Script: {instanceID: 6262}
+      Script: {instanceID: 6352}
     - Class: 114
-      Script: {instanceID: 6320}
+      Script: {instanceID: 6410}
     - Class: 114
-      Script: {instanceID: 6590}
+      Script: {instanceID: 6680}
     - Class: 114
-      Script: {instanceID: 6706}
+      Script: {instanceID: 6796}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 135
@@ -1050,4 +1050,4 @@ ScriptsOnlyBuild:
   platform: 19
   scenePathNames:
   - Assets/Scenes/SampleScene.unity
-  playerPath: D:/WorkData/Unity/Chess/Chess.exe
+  playerPath: /Volumes/SOPHIA/UnityProject/Chess/Chess/Chess.exe
