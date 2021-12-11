@@ -397,7 +397,7 @@ public class ChessGameManager : MonoBehaviour
             WhitePieceTurn = true;
         }
         //指令に違反し動いた
-        else if (WhitePieceNum != 3)
+        else if (WhitePieceNum != 3 && PlayerPossibility[NextPos.X,NextPos.Y] >= 1)
         {
             //ここでプレイヤーを動かす
             WhitePiece[3].GetComponent<PlayerMove>().Move0 = true;
@@ -443,7 +443,7 @@ public class ChessGameManager : MonoBehaviour
 
     private void TurnControl()
     {
-        if(ClickCheck ==true)
+        if(ClickCheck && !NoClick)
         {
             if(!FirstClick)
             {
@@ -484,7 +484,7 @@ public class ChessGameManager : MonoBehaviour
                         }
                     }
                 }
-                else
+                else if (turn == Turn.black)
                 {
                     BlackTurn();
                     for (int i = 0; i < 16; i++)
@@ -495,6 +495,7 @@ public class ChessGameManager : MonoBehaviour
                         }
                     }
                 }
+                NoClick = true;
             }
             ClickCheck = false;
         }
@@ -539,7 +540,7 @@ public class ChessGameManager : MonoBehaviour
         LookPT();
         DebugDataLog(PlayerPossibility);
         */
-        //StartCoroutine(CalcCostMap(Turn.white));
+        //StartCoroutine(CalcCostMap(Turn.white, WhitePieceTurn));
     }
 
     // Update is called once per frame
@@ -566,8 +567,8 @@ public class ChessGameManager : MonoBehaviour
             //LookPT();
             
             //移動させるべきコマをデバッグログに表示
-            StartCoroutine(CalcCostMap(Turn.white));
-            //StartCoroutine(CalcCostMap(Turn.black));
+            StartCoroutine(CalcCostMap(Turn.white, WhitePieceTurn));
+            //StartCoroutine(CalcCostMap(Turn.black, WhitePieceTurn));
 
 
             //DoUpdate = false;
